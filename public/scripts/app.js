@@ -1,8 +1,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var Component = require('./components/Component')
+var CommentBox = require('./components/CommentBox')
 
 ReactDOM.render(
-  <Component />,
+  <CommentBox url="/api/comments" pollInterval={2000}/>,
   document.getElementById('app')
 );

@@ -10,6 +10,7 @@
     "start": "npm run watch & nodemon server.js"
   },
   "dependencies": {
+    "jquery": "~1.11.3",
     "express": "~4.11.1",
     "mongoose": "~3.8.0",
     "body-parser": "~1.4.2",
@@ -27,7 +28,8 @@
     "nodemon": "~1.8.1",
     "uglify-js": "~2.4.15",
     "watchify": "~3.6.1",
-    "babelify": "~7.2.0"
+    "babelify": "~7.2.0",
+    "flux": "~2.1.1"
   },
   "browserify": {
     "transform": [["babelify", { "presets": ["es2015", "react"] }]]
