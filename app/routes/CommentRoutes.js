@@ -19,6 +19,7 @@ module.exports = function(app) {
     });
 
     app.post('/api/comments', function(req, res) {
+
         Comment.create(req.body, function(err, comment) {
             if (err) {
                 res.send(err);
@@ -36,5 +37,6 @@ module.exports = function(app) {
                 res.json(comments);
             });
         });
+    
     });
 };
