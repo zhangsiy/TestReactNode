@@ -2,7 +2,7 @@ var Comment = require('../models/comment');
 
 module.exports = function(app) {
 
-    app.get('/api/comments', function(req, res) {
+    app.get('/api/v1/comments', function(req, res) {
 
         Comment
         .find()
@@ -18,7 +18,7 @@ module.exports = function(app) {
 
     });
 
-    app.post('/api/comments', function(req, res) {
+    app.post('/api/v1/comments', function(req, res) {
 
         Comment.create(req.body, function(err, comment) {
             if (err) {

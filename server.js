@@ -7,8 +7,15 @@ var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
 var mongoose       = require('mongoose');
 var fs			   = require('fs');
+var jwt            = require('express-jwt');
 
 // configuration ===========================================
+
+// Auth0 JWT configuration
+var jwtCheck = jwt({
+  secret: new Buffer('xiyBmHj6UXI68aF7ntEQ52lSZ0SwROnElcX6yCPXt0zJgTs0OFi8u5HdI4mlLKyv', 'base64'),
+  audience: 'sVjv6vTPwY5TDkGfD4zG7yg0Fqj0WaCm'
+});
     
 // config files
 var db = require('./config/db');
@@ -19,7 +26,7 @@ var port = process.env.PORT || serverConfig.port;
 
 // connect to our mongoDB database 
 // (uncomment after you enter in your own credentials in config/db.js)
-// mongoose.connect(db.url); 
+mongoose.connect(db.url); 
 
 // get all data/stuff of the body (POST) parameters
 // parse application/json 
@@ -45,6 +52,9 @@ app.use(express.static(__dirname + '/public'));
 
 // expose the bower components for easy references
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
+
+// Apply security check from Auth0
+app.use('/api', jwtCheck);
 
 // models ==================================================
 // var modelsPath = __dirname + '/app/models';
