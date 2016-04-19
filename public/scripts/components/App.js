@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link} from 'react-router';
 import $ from 'jquery';
 
 import LeftNav from 'material-ui/lib/left-nav';
@@ -10,6 +10,7 @@ import AppBar from 'material-ui/lib/app-bar';
 import Todo from './Todo';
 import Home from './Home';
 import SignedIn from './SignedIn';
+import Test from './Test';
 
 class App extends React.Component {
     componentWillMount() {
@@ -48,12 +49,35 @@ class App extends React.Component {
         return idToken;
     }
 
+    // render() {
+    //     if (this.state.idToken) {
+    //       return (<SignedIn lock={this.lock} idToken={this.state.idToken} />);
+    //     } else {
+    //       return (<Home lock={this.lock} />);
+    //     }
+    // }
+
     render() {
-        if (this.state.idToken) {
-          return (<SignedIn lock={this.lock} idToken={this.state.idToken} />);
-        } else {
-          return (<Home lock={this.lock} />);
-        }
+        return (
+            <div>
+                <div className="nav">
+                    <RaisedButton
+                      containerElement={<Link to="/" />}
+                      linkButton={true}
+                      label='Home'/>
+                    <RaisedButton
+                      containerElement={<Link to="test" />}
+                      linkButton={true}
+                      label='Test'/>
+                    <RaisedButton
+                      containerElement={<Link to="signin" params={{lock:this.lock}}/>}
+                      linkButton={true}
+                      label='Sign In'/>
+                </div>
+                <div>hahaha</div>
+                {this.props.children}
+            </div>
+        );
     }
 
     // render() {
@@ -61,29 +85,11 @@ class App extends React.Component {
     //         <div>
     //             <AppBar title='Google Proxy' />
 
-    //             <LeftNav docked={false}>
-    //               <MenuItem>Menu Item</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
-    //               <MenuItem>Menu Item 2</MenuItem>
+    //             <LeftNav docked={true}>
+    //               <Link to="todo">Todo</Link>
     //             </LeftNav>
          
-    //             <section className="content">
-    //               <Todo onClick={function() {alert('mamama');}} text="Alibaba" lock={this.lock} completed={false}>wahaha</Todo>
-    //             </section>
+    //             <div>This is main page!</div>
     //         </div>
     //     );
     // }

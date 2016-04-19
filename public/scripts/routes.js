@@ -3,10 +3,12 @@ import { Route, IndexRoute } from 'react-router';
 import App from './components/App';
 import Home from './components/Home';
 import SignedIn from './components/SignedIn';
+import Todo from './components/Todo';
+import Test from './components/Test';
 
 module.exports = (
-  <Route path="/" component={App}>
-    <Route path="home" component={Home}/>
-    <Route path="signed_in" component={SignedIn}/>
+  <Route path="/" component={App} >
+    <Route path="test" component={Test} />
+    <Route path="todo" component={Todo} />
   </Route>
 );
