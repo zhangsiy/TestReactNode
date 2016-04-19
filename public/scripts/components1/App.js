@@ -7,31 +7,23 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 import RaisedButton from 'material-ui/lib/raised-button';
 import AppBar from 'material-ui/lib/app-bar';
 
+import Todo from './Todo';
 import Home from './Home';
-import SignedIn from './About';
-import Test from './Contact';
+import SignedIn from './SignedIn';
+import Test from './Test';
 
 class App extends React.Component {
-
     componentWillMount() {
         this.setupAjax();
         this.createLock();
-
         this.setState({idToken: this.getIdToken()});
     }
 
-    test = () => {
-        alert('hahaha');
-    }
-
-    // Create Auth0 lock
-    createLock = () => {
+    createLock() {
         this.lock = new Auth0Lock('sVjv6vTPwY5TDkGfD4zG7yg0Fqj0WaCm', 'zhangsiy.auth0.com');
     }
 
-    // Inject the needed autenticated token into Ajax request
-    // header
-    setupAjax = () => {
+    setupAjax() {
         $.ajaxSetup({
           'beforeSend': function(xhr) {
             if (localStorage.getItem('userToken')) {
@@ -42,7 +34,7 @@ class App extends React.Component {
         });
     }
 
-    getIdToken = () => {
+    getIdToken() {
         var idToken = localStorage.getItem('userToken');
         var authHash = this.lock.parseHash(window.location.hash);
         if (!idToken && authHash) {
@@ -57,11 +49,13 @@ class App extends React.Component {
         return idToken;
     }
 
-    showLogInWindow = () => {
-        // We receive lock from the parent component in this case
-        // If you instantiate it in this component, just do this.lock.show()
-        this.lock.show();
-    }
+    // render() {
+    //     if (this.state.idToken) {
+    //       return (<SignedIn lock={this.lock} idToken={this.state.idToken} />);
+    //     } else {
+    //       return (<Home lock={this.lock} />);
+    //     }
+    // }
 
     render() {
         return (
@@ -72,22 +66,33 @@ class App extends React.Component {
                       linkButton={true}
                       label='Home'/>
                     <RaisedButton
-                      containerElement={<Link to="about" />}
+                      containerElement={<Link to="test" />}
                       linkButton={true}
-                      label='About'/>
+                      label='Test'/>
                     <RaisedButton
-                      containerElement={<Link to="contact" />}
+                      containerElement={<Link to="signin" params={{lock:this.lock}}/>}
                       linkButton={true}
-                      label='Contact'/>
-                    <RaisedButton
-                      label='Login'
-                      linkButton={true}
-                      onClick={this.showLogInWindow} />
+                      label='Sign In'/>
                 </div>
+                <div>hahaha</div>
                 {this.props.children}
             </div>
         );
     }
+
+    // render() {
+    //     return (
+    //         <div>
+    //             <AppBar title='Google Proxy' />
+
+    //             <LeftNav docked={true}>
+    //               <Link to="todo">Todo</Link>
+    //             </LeftNav>
+         
+    //             <div>This is main page!</div>
+    //         </div>
+    //     );
+    // }
 }
 
-export default App;
+export default App

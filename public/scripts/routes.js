@@ -1,14 +1,15 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
+
 import App from './components/App';
 import Home from './components/Home';
-import SignedIn from './components/SignedIn';
-import Todo from './components/Todo';
-import Test from './components/Test';
+import About from './components/About';
+import Contact from './components/Contact';
 
 module.exports = (
   <Route path="/" component={App} >
-    <Route path="test" component={Test} />
-    <Route path="todo" component={Todo} />
+    <IndexRoute component={Home} />
+    <Route path="about" component={About} />
+    <Route path="contact" component={Contact} />
   </Route>
 );
