@@ -2,26 +2,24 @@ import React from 'react';
 import { browserHistory, Link} from 'react-router';
 import $ from 'jquery';
 
-import LeftNav from 'material-ui/lib/left-nav';
-import MenuItem from 'material-ui/lib/menus/menu-item';
-import RaisedButton from 'material-ui/lib/raised-button';
-import AppBar from 'material-ui/lib/app-bar';
-
-import Home from './Home';
-import SignedIn from './About';
-import Test from './Contact';
+import { LeftNav, MenuItem } from 'material-ui';
+import { FlatButton, RaisedButton } from 'material-ui';
+import { AppBar } from 'material-ui';
 
 class App extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            leftNavOpen: false
+        };
+    }
 
     componentWillMount() {
         this.setupAjax();
         this.createLock();
 
         this.setState({idToken: this.getIdToken()});
-    }
-
-    test = () => {
-        alert('hahaha');
     }
 
     // Create Auth0 lock
@@ -63,28 +61,85 @@ class App extends React.Component {
         this.lock.show();
     }
 
+    logout = () => {
+        localStorage.removeItem('userToken');
+        this.setState({idToken: null});
+        browserHistory.push('/');
+    }
+
+    handleNavButtonTouchTap = (route) => {
+        browserHistory.push(route);
+    }
+
+    handleLeftNavToggle = () => {
+        this.setState({leftNavOpen: !this.state.leftNavOpen});
+    }
+
+    handleLeftNavClose = () => {
+        this.setState({leftNavOpen: false});
+    }
+
     render() {
-        return (
-            <div>
-                <div className="nav">
-                    <RaisedButton
-                      containerElement={<Link to="/" />}
-                      linkButton={true}
-                      label='Home'/>
-                    <RaisedButton
-                      containerElement={<Link to="about" />}
-                      linkButton={true}
-                      label='About'/>
-                    <RaisedButton
-                      containerElement={<Link to="contact" />}
-                      linkButton={true}
-                      label='Contact'/>
-                    <RaisedButton
+        var wrapperDivStyle = {
+            padding: 0,
+            margin: 0
+        };
+
+        var navItemStyle = {
+            color: 'white'
+        };
+
+        var leftNavHeaderStyle = {
+            backgroundColor: "#00bcd4",
+            color: "rgba(255, 255, 255, 1)",
+            fontSize: 24,
+            fontWeight: 300,
+            lineHeight: "64px",
+            marginBottom: 8,
+            paddingLeft: 24
+        };
+
+        var loginButton = this.state.idToken 
+                    ? <FlatButton
+                      label='Logout'
+                      style={navItemStyle}
+                      primary={true}
+                      onTouchTap={this.logout} />
+                    : <FlatButton
                       label='Login'
-                      linkButton={true}
-                      onClick={this.showLogInWindow} />
-                </div>
+                      style={navItemStyle}
+                      primary={true}
+                      onTouchTap={this.showLogInWindow} />;
+
+        return (
+            <div style={wrapperDivStyle}>
+                <AppBar 
+                    title="Dragon's Nest" 
+                    onLeftIconButtonTouchTap={this.handleLeftNavToggle} >
+                    <FlatButton
+                      onTouchTap={() => this.handleNavButtonTouchTap('/')}
+                      style={navItemStyle}
+                      label='Home' />
+                    <FlatButton
+                      onTouchTap={() => this.handleNavButtonTouchTap('about')}
+                      style={navItemStyle}
+                      label='About' />
+                    <FlatButton
+                      onTouchTap={() => this.handleNavButtonTouchTap('contact')}
+                      style={navItemStyle}
+                      label='Contact' />
+                    {loginButton}
+                </AppBar>
                 {this.props.children}
+                <LeftNav
+                  docked={false}
+                  width={200}
+                  open={this.state.leftNavOpen}
+                  onRequestChange={open => this.setState({leftNavOpen:open})}
+                >
+                  <div style={leftNavHeaderStyle}>My Apps</div>
+                  <MenuItem onTouchTap={this.handleLeftNavClose}>Todos</MenuItem>
+                </LeftNav>
             </div>
         );
     }
