@@ -72,7 +72,11 @@ class App extends React.Component {
     }
 
     handleLeftNavToggle = () => {
-        this.setState({leftNavOpen: !this.state.leftNavOpen});
+        if (this.state.idToken) {
+            this.setState({leftNavOpen: !this.state.leftNavOpen});
+        } else {
+            this.showLogInWindow();
+        }
     }
 
     handleLeftNavClose = () => {
@@ -80,6 +84,11 @@ class App extends React.Component {
     }
 
     render() {
+        var appBarStyle = {
+            position: "fixed",
+            top: 0
+        };
+
         var wrapperDivStyle = {
             padding: 0,
             margin: 0
@@ -99,6 +108,18 @@ class App extends React.Component {
             paddingLeft: 24
         };
 
+        var footerStyle = {
+            backgroundColor: "#212121",
+            textAlign: "center",
+            position: "fixed",
+            bottom: 0,
+            margin: 0,
+            paddingTop: 5,
+            paddingBottom: 5,
+            width: "100%",
+            color: "white"
+        };
+
         var loginButton = this.state.idToken 
                     ? <FlatButton
                       label='Logout'
@@ -111,10 +132,15 @@ class App extends React.Component {
                       primary={true}
                       onTouchTap={this.showLogInWindow} />;
 
+        var footer = (
+            <h4 style={footerStyle}>Dadouer Studio (A Jeff Zhang's Brand)  |  2016</h4>
+        );
+
         return (
             <div style={wrapperDivStyle}>
                 <AppBar 
-                    title="Dragon's Nest" 
+                    style={appBarStyle}
+                    title="The Nest" 
                     onLeftIconButtonTouchTap={this.handleLeftNavToggle} >
                     <FlatButton
                       onTouchTap={() => this.handleNavButtonTouchTap('/')}
@@ -128,9 +154,15 @@ class App extends React.Component {
                       onTouchTap={() => this.handleNavButtonTouchTap('contact')}
                       style={navItemStyle}
                       label='Contact' />
+                    <FlatButton
+                      onTouchTap={() => this.handleNavButtonTouchTap('notes')}
+                      style={navItemStyle}
+                      label='Notes' />
                     {loginButton}
                 </AppBar>
+                <div style={{paddingTop:70}} />
                 {this.props.children}
+                <div style={{paddingBottom:30}} />
                 <LeftNav
                   docked={false}
                   width={200}
@@ -140,6 +172,7 @@ class App extends React.Component {
                   <div style={leftNavHeaderStyle}>My Apps</div>
                   <MenuItem onTouchTap={this.handleLeftNavClose}>Todos</MenuItem>
                 </LeftNav>
+                {footer}
             </div>
         );
     }
